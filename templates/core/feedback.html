@@ -1,0 +1,12 @@
+#### FILE: templates/core/feedback.html
+{% extends 'core/base.html' %}
+{% block content %}
+  <h2>Feedback</h2>
+  <h3>Question</h3>
+  <p>{{ question.text }}</p>
+
+  <h3>Feedback JSON</h3>
+  <pre>{{ feedback|safe }}</pre>
+
+  <a href="{% url 'interview' session_id=question.session.id %}">Next Question</a>
+{% endblock %}

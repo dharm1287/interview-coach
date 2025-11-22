@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+{% block content %}
+  <h2>Interview: {{ session.role }} ({{ session.level }})</h2>
+  <section>
+    <h3>Question</h3>
+    <p>{{ question.text }}</p>
+  </section>
+
+  <section>
+    <h3>Your Answer</h3>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit Answer</button>
+    </form>
+  </section>
+
+  <section>
+    <h4>Quick Record (browser)</h4>
+    <button id="recordBtn">Start Recording</button>
+    <script>
+      const recordBtn = document.getElementById('recordBtn');
+      let mediaRecorder, chunks = [];
+      recordBtn.onclick = async () => {
+        if (!mediaRecorder) {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = e => chunks.push(e.data);
+          mediaRecorder.onstop = async () => {
+            const blob = new Blob(chunks, { type: 'audio/webm' });
+            const fd = new FormData();
+            fd.append('audio', blob, 'answer.webm');
+            // submit to current form endpoint
+            await fetch(window.location.href, { method: 'POST', body: fd, headers: {'X-CSRFToken': getCookie('csrftoken')} });
+            location.reload();
+          };
+          mediaRecorder.start();
+          recordBtn.textContent = 'Stop & Upload';
+        } else {
+          mediaRecorder.stop();
+          mediaRecorder = null;
+          chunks = [];
+          recordBtn.textContent = 'Start Recording';
+        }
+      };
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+    </script>
+{% endblock %}

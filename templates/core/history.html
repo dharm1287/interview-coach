@@ -1,0 +1,12 @@
+#### FILE: templates/core/history.html
+{% extends 'core/base.html' %}
+{% block content %}
+  <h2>Past Sessions</h2>
+  <ul>
+    {% for s in sessions %}
+      <li><a href="{% url 'interview' session_id=s.id %}">{{ s }}</a></li>
+    {% empty %}
+      <li>No sessions yet</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

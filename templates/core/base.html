@@ -1,0 +1,24 @@
+#### FILE: templates/core/base.html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Interview Coach</title>
+    <link rel="stylesheet" href="/static/core/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><a href="/">AI Interview Coach</a></h1>
+        <nav><a href="/history/">History</a></nav>
+      </header>
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+      <footer>
+        <p>Built with ❤️ — Django + GenAI</p>
+      </footer>
+    </div>
+  </body>
+</html>

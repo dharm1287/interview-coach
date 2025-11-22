@@ -1,0 +1,4 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+header { display:flex; justify-content:space-between; align-items:center; }
+pre { background:#f5f5f5; padding:10px; }
